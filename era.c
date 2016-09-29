@@ -8,9 +8,7 @@ typedef struct node {
 } node;
 
 int max=0;
-int l=1;
-int i=1;
-int k=0;
+int i=0;
 
 node *pop(node* root,int koef1,int exp1);
 node *createList(int koef1,int exp1);
@@ -36,9 +34,9 @@ int main(int argc, char const *argv[])
 	pr(root);
 	int max1=MaxElement(root);
 	printf("\nmax=%d\n",max);
-	printf("vvv=%d\n",l);
+	printf("vvv=%d\n",i);
 	// delFromEnd(root);
-	Delete_Item_node(root,l-1);
+	Delete_Item_node(root,i-1);
 	pr(root);
 	return 0;
 }
@@ -125,15 +123,21 @@ int MaxElement(node *root){
 // 	delFromEnd(root);
 // }
 
+node *plus(node *root){
+	node *current=root;
+	current=current->next;
+	if(root->exp==current->exp){
+		root->koef+current->koef;
+		Delete_Item_node()
+
+	}
+}
+
 node* Delete_Item_node(node* Head, int Number){
   node *ptr;//вспомогательный указатель
-  if(k==0)
   node *Current = Head;
-	k++;
-  if((i < Number && Current != NULL)&&i++){
+  for (int i = 1; i < Number && Current != NULL; i++)
     Current = Current->next;
-		Delete_Item_node(Current,l);
-	}
   if (Current != NULL){//проверка на корректность
     if (Current == Head){//удаляем первый элемент
       Head = Head->next;
