@@ -9,6 +9,7 @@ typedef struct node {
 
 int max=0;
 int i=0;
+char c=' ';
 
 node *pop(node* root,int koef1,int exp1);
 node *createList(int koef1,int exp1);
@@ -16,7 +17,9 @@ node *createPolinome(node* top,int num);
 int MaxElement(node *root);
 void pr(node *root);
 void delFromEnd(node* root);
-node* Delete_Item_node(node* Head, int Number);
+void Delete_Item_node(node* head,node* nextEl);
+void each(node* root,node* la,node* cur);
+void plus(node *root1);
 
 int main(int argc, char const *argv[])
 {
@@ -29,15 +32,12 @@ int main(int argc, char const *argv[])
 	printf("Number of polynomial member: ");
 	scanf("%d",&pol);
 	end=createPolinome(top,pol);
-	// printf("koef=%d exp=%d\n",end->koef,end->exp);
-	// printf("prrrrrrrrrrrrrrr\n");
+	printf("\n");
+	pr(root);	
+	plus(root);
+	printf("= ");
 	pr(root);
-	int max1=MaxElement(root);
-	printf("\nmax=%d\n",max);
-	printf("vvv=%d\n",i);
-	// delFromEnd(root);
-	Delete_Item_node(root,i-1);
-	pr(root);
+	printf("\n");
 	return 0;
 }
 
@@ -64,7 +64,7 @@ node *pop(node* root,int koef1,int exp1){
 node *createPolinome(node* current,int num){
 	
 	if(num==0){
-		printf("%d\n",num);
+		// printf("%d\n",num);
 		return current;
 	}
 
@@ -83,75 +83,63 @@ node *createPolinome(node* current,int num){
 }						
 
 void pr(node *root){
-	// printf("pr is work");
 	
-		if(root->next==NULL) return;
 		root=root->next;
-		printf("%dx^%d +",root->koef, root->exp);
+
+		if(root==NULL) return;
+		
+		// c='+';
+		printf("%dx^%d",root->koef, root->exp);	
+		if(root->next==NULL)
+		printf(" ");
+		else printf(" + ");
 
 		pr(root);
 }
 
-int MaxElement(node *root){
-	
-	i++;
-		if(max<root->exp){
-			max=root->exp;
-			// printf("%d\n",max);
-		}
-		if(root->next==NULL) return max;
-		root=root->next;
-		// max=(max<root->exp)?root->exp:max;
-		
-		max=MaxElement(root);
-		return max;
 
-}
 
-// void delFromEnd(node* root){
-// 	if(root->next==NULL)return;
-// 	if((root->next->exp==max)){
-// 		printf("exp=%d max=%d\n",root->next->exp,max);
-// 		if(root->next->next!=NULL)root->next=root->next->next;
-
-// 		printf("I work\n");
-// 		// root->next=NULL;
-// 		delete(root->next);
-// 		// 
-// 	}
-// 	root=root->next;
-// 	delFromEnd(root);
-// }
-
-node *plus(node *root){
-	node *current=root;
-	current=current->next;
-	if(root->exp==current->exp){
-		root->koef+current->koef;
-		Delete_Item_node()
-
+void plus(node* root1){
+	node *root=root1;
+	if(root->next==NULL){
+		// printf("Plus work good\n");
+		return;
 	}
+	// printf("work1\n");
+	each(root,root,root->next);
+	// printf("work2\n");
+	plus(root->next);
+	return;
 }
 
-node* Delete_Item_node(node* Head, int Number){
-  node *ptr;//вспомогательный указатель
-  node *Current = Head;
-  for (int i = 1; i < Number && Current != NULL; i++)
-    Current = Current->next;
-  if (Current != NULL){//проверка на корректность
-    if (Current == Head){//удаляем первый элемент
-      Head = Head->next;
-      delete(Current);
-      Current = Head;
-    }
-    else {//удаляем непервый элемент
-      ptr = Head;
-      while (ptr->next != Current)
-        ptr = ptr->next; 
-      ptr->next = Current->next;
-      delete(Current);
-      Current=ptr;
-    }
+void each(node* root,node* la,node* cur){
+	node *current=cur;
+	
+	if(root->exp==current->exp){
+		root->koef=root->koef+current->koef;
+		max=current->exp;
+		// printf("each work\n");
+		Delete_Item_node(la,current);
+	}
+	if(current->next==NULL)return;
+	each(root,current,current->next);
+	return;
+}
+
+void Delete_Item_node(node* head,node *nextEl){
+  node *ptr;
+
+  if(nextEl==NULL)
+  	return;
+  ptr=head;
+  // i++;
+  // printf("%d\n",i);
+  if(nextEl->exp==max){
+  	ptr->next=nextEl->next;
+  	free(nextEl);
+  	return ;
   }
-  return Head;
+
+  Delete_Item_node(nextEl,nextEl->next);
+	 
 }

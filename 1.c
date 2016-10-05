@@ -11,6 +11,7 @@ int max=0;
 int l=1;
 int i=1;
 int k=0;
+char c='+';
 
 node *pop(node* root,int koef1,int exp1);
 node *createList(int koef1,int exp1);
@@ -18,7 +19,8 @@ node *createPolinome(node* top,int num);
 int MaxElement(node *root);
 void pr(node *root);
 void delFromEnd(node* root);
-node* Delete_Item_node(node* Head, int Number);
+void Delete_Item_node(node* head,node* nextEl);
+
 
 int main(int argc, char const *argv[])
 {
@@ -38,7 +40,9 @@ int main(int argc, char const *argv[])
 	printf("\nmax=%d\n",max);
 	printf("vvv=%d\n",l);
 	// delFromEnd(root);
-	Delete_Item_node(root,l-1);
+	i=0;
+	Delete_Item_node(root,root);
+	// printf("good\n");
 	pr(root);
 	return 0;
 }
@@ -87,9 +91,12 @@ node *createPolinome(node* current,int num){
 void pr(node *root){
 	// printf("pr is work");
 	
-		if(root->next==NULL) return;
+		if(root->next==NULL){
+			
+			return;
+		}
 		root=root->next;
-		printf("%dx^%d +",root->koef, root->exp);
+		printf("%dx^%d %c",root->koef, root->exp,c);
 
 		pr(root);
 }
@@ -110,44 +117,19 @@ int MaxElement(node *root){
 
 }
 
-// void delFromEnd(node* root){
-// 	if(root->next==NULL)return;
-// 	if((root->next->exp==max)){
-// 		printf("exp=%d max=%d\n",root->next->exp,max);
-// 		if(root->next->next!=NULL)root->next=root->next->next;
+void Delete_Item_node(node* head,node *nextEl){
+  node *ptr;
 
-// 		printf("I work\n");
-// 		// root->next=NULL;
-// 		delete(root->next);
-// 		// 
-// 	}
-// 	root=root->next;
-// 	delFromEnd(root);
-// }
-
-node* Delete_Item_node(node* Head, int Number){
-  node *ptr;//вспомогательный указатель
-  if(k==0)
-  node *Current = Head;
-	k++;
-  if((i < Number && Current != NULL)&&i++){
-    Current = Current->next;
-		Delete_Item_node(Current,l);
-	}
-  if (Current != NULL){//проверка на корректность
-    if (Current == Head){//удаляем первый элемент
-      Head = Head->next;
-      delete(Current);
-      Current = Head;
-    }
-    else {//удаляем непервый элемент
-      ptr = Head;
-      while (ptr->next != Current)
-        ptr = ptr->next; 
-      ptr->next = Current->next;
-      delete(Current);
-      Current=ptr;
-    }
+  if(nextEl==NULL)
+  	return;
+  ptr=head;
+  i++;
+  printf("%d\n",i);
+  if(nextEl->exp==max){
+  	ptr->next=nextEl->next;
+  	free(nextEl);
   }
-  return Head;
+
+  Delete_Item_node(nextEl,nextEl->next);
+	 
 }
