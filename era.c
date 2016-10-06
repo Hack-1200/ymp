@@ -2,61 +2,55 @@
 #include <stdlib.h>
 
 typedef struct node {
-	int koef;
-	int exp;
+	int KOEF;
+	int EXP;
 	struct node *next;
 } node;
 
 int max=0;
-int i=0;
-char c=' ';
 
-node *pop(node* root,int koef1,int exp1);
-node *createList(int koef1,int exp1);
+node *pop(node* head,int KOEF1,int EXP1);
+node *Create_List(int KOEF1,int EXP1);
 node *createPolinome(node* top,int num);
-int MaxElement(node *root);
-void pr(node *root);
-void delFromEnd(node* root);
-void Delete_Item_node(node* head,node* nextEl);
-void each(node* root,node* la,node* cur);
-void plus(node *root1);
+int MaxElement(node *head);
+void pr(node *head);
+void delFromEnd(node* head);
+void Delete_Element(node* head,node* next_node);
+void Sum(node* head,node* la,node* cur);
+void Addition_Of_Polinoms(node *head1);
 
 int main(int argc, char const *argv[])
 {
-	// node *root=createList();
 	int pol;
 	node *top,*end;
-	node *root=createList(0,0);
-	top=root;
-	end=root;
+	node *head=Create_List(0,0);
+	top=head;
+	end=head;
 	printf("Number of polynomial member: ");
 	scanf("%d",&pol);
 	end=createPolinome(top,pol);
 	printf("\n");
-	pr(root);	
-	plus(root);
+	pr(head);	
+	Addition_Of_Polinoms(head);
 	printf("= ");
-	pr(root);
+	pr(head);
 	printf("\n");
 	return 0;
 }
 
-node *createList(int koef1,int exp1){
-	node *root;
-	root=(node*)malloc(sizeof(node));
-	root->koef=koef1;
-	root->exp=exp1;
-	root->next=NULL;
-	return root;
+node *Create_List(int KOEF1,int EXP1){
+	node *head;
+	head=(node*)malloc(sizeof(node));
+	head->KOEF=KOEF1;
+	head->EXP=EXP1;
+	head->next=NULL;
+	return head;
 }
 
-node *pop(node* root,int koef1,int exp1){
-	// if(root==NULL){
-	// 	root=createList(0,0);
-	// }
+node *pop(node* head,int KOEF1,int EXP1){
 	node *conductor;
-	conductor=root;
-	conductor->next=createList(koef1,exp1);
+	conductor=head;
+	conductor->next=Create_List(KOEF1,EXP1);
 	conductor=conductor->next;
 	return conductor;
 }
@@ -64,16 +58,14 @@ node *pop(node* root,int koef1,int exp1){
 node *createPolinome(node* current,int num){
 	
 	if(num==0){
-		// printf("%d\n",num);
 		return current;
 	}
 
 	
 	int k,e;
-	// current=top;
 	printf("Enter coefficient: ");
 	scanf("%d",&k);
-	printf("Enter exponent: ");
+	printf("Enter EXPonent: ");
 	scanf("%d",&e);
 	
 	current=pop(current,k,e);
@@ -82,64 +74,58 @@ node *createPolinome(node* current,int num){
     return current;
 }						
 
-void pr(node *root){
+void pr(node *head){
 	
-		root=root->next;
+		head=head->next;
 
-		if(root==NULL) return;
+		if(head==NULL) return;
 		
 		// c='+';
-		printf("%dx^%d",root->koef, root->exp);	
-		if(root->next==NULL)
+		printf("%dx^%d",head->KOEF, head->EXP);	
+		if(head->next==NULL)
 		printf(" ");
 		else printf(" + ");
 
-		pr(root);
+		pr(head);
 }
 
 
 
-void plus(node* root1){
-	node *root=root1;
-	if(root->next==NULL){
-		// printf("Plus work good\n");
+void Addition_Of_Polinoms(node* head1){
+	node *head=head1;
+	if(head->next==NULL){
 		return;
 	}
-	// printf("work1\n");
-	each(root,root,root->next);
-	// printf("work2\n");
-	plus(root->next);
+	Sum(head,head,head->next);
+	Addition_Of_Polinoms(head->next);
 	return;
 }
 
-void each(node* root,node* la,node* cur){
+void Sum(node* head,node* la,node* cur){
 	node *current=cur;
 	
-	if(root->exp==current->exp){
-		root->koef=root->koef+current->koef;
-		max=current->exp;
-		// printf("each work\n");
-		Delete_Item_node(la,current);
+	if(head->EXP==current->EXP){
+		head->KOEF=head->KOEF+current->KOEF;
+		max=current->EXP;
+		Delete_Element(la,current);
 	}
 	if(current->next==NULL)return;
-	each(root,current,current->next);
+	Sum(head,current,current->next);
 	return;
 }
 
-void Delete_Item_node(node* head,node *nextEl){
-  node *ptr;
+void Delete_Element(node* head,node *next_node){
+  node *node;
 
-  if(nextEl==NULL)
+  if(next_node==NULL)
   	return;
-  ptr=head;
-  // i++;
-  // printf("%d\n",i);
-  if(nextEl->exp==max){
-  	ptr->next=nextEl->next;
-  	free(nextEl);
+  node=head;
+  if(next_node->EXP==max){
+  	node->next=next_node->next;
+  	free(next_node);
   	return ;
   }
 
-  Delete_Item_node(nextEl,nextEl->next);
+  Delete_Element(next_node,next_node->next);
 	 
 }
